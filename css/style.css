@@ -2,10 +2,11 @@
 /* General */
 /* Mobile first */
 body{
-    background-color: #FFFFFF;
+    background: url("../img/26584.jpg") no-repeat fixed;
+    background-size: cover;
     color: black;
     margin: 20px;
-    font-family: 'Open Sans', sans-serif;
+    font-family: Helvetica, Arial, san-serif, serif;
 }
 
 h1{

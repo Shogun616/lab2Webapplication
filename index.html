@@ -11,26 +11,26 @@
     <form v-on:submit.prevent="addNewCar">
     <label for="new-car">Add a premium car</label>
         <fieldset>
-    <input
+            <input
             v-model="newBrand"
             id="new-car"
             placeholder="Brand Name"
-    >
-        <input
+            >
+            <label for="new-car-name"></label><input
                 v-model="newName"
                 id="new-car-name"
                 placeholder="Car Name"
-        >
-        <input
+            >
+            <label for="new-car-style"></label><input
                 v-model="newStyle"
                 id="new-car-style"
                 placeholder="Car Style"
-        >
-        <input
+            >
+            <label for="new-car-price"></label><input
                 v-model="newPrice"
                 id="new-car-price"
                 placeholder="Price"
-        >
+            >
     <button>Add</button>
         </fieldset>
     </form>
@@ -39,7 +39,7 @@
                 is="premium-car"
                 v-for="(car, index) in cars"
                 v-bind:key="car.id"
-                v-bind:cars="car.brand + ' ' + car.name + ' , ' + car.style + ' , ' + car.price + ' kr'"
+                v-bind:cars="car.brand + ' ' + car.name + ',  ' + car.style + ', ' + car.price + ' kr'"
                 v-on:remove="cars.splice(index, 1)"
         ></li>
     </ul>
@@ -71,7 +71,7 @@
                     brand: 'Bugatti',
                     name: 'Chiron Sport',
                     style: '2-door coupe',
-                    price: 42000000
+                    price: 42000000,
                 },
                 {
                     id: 2,
@@ -99,11 +99,10 @@
                     style: this.newStyle,
                     price: this.newPrice
                 })
-                this.newBrand = '',
-                    this.newName = '',
-                    this.newStyle = '';
+                this.newBrand = ''
+                this.newName = ''
+                this.newStyle = ''
                 this.newPrice = ''
-
             }
         }
     })
