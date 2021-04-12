@@ -7,112 +7,147 @@
     <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 <body>
-<section>
+<section class="grid-container">
 <header>
-
+    <h1>Premium Car</h1>
 </header>
-<div id="premium-car-list">
-    <form v-on:submit.prevent="addNewCar">
-    <label for="new-car">Add a premium car</label>
-        <fieldset>
-            <input
-            v-model="newBrand"
-            id="new-car"
-            placeholder="Brand Name"
-            >
-            <label for="new-car-name"></label><input
-                v-model="newName"
-                id="new-car-name"
-                placeholder="Car Name"
-            >
-            <label for="new-car-style"></label><input
-                v-model="newStyle"
-                id="new-car-style"
-                placeholder="Car Style"
-            >
-            <label for="new-car-price"></label><input
-                v-model="newPrice"
-                id="new-car-price"
-                placeholder="Price"
-            >
-    <button>Add</button>
-        </fieldset>
-    </form>
-    <ul>
-        <li
-                is="premium-car"
-                v-for="(car, index) in cars"
-                v-bind:key="car.id"
-                v-bind:cars="car.brand + ' ' + car.name + ',  ' + car.style + ', ' + car.price + ' kr'"
-                v-on:remove="cars.splice(index, 1)"
-        ></li>
-    </ul>
-</div>
+        <div id="premium-car-list">
+            <form v-on:submit.prevent="addNewCar">
+                <label for="new-car">Add a premium car</label>
+                <fieldset>
+                    <input
+                            v-model="newBrand"
+                            id="new-car"
+                            placeholder="Brand Name"
+                    >
+                    <label for="new-car-name"></label><input
+                        v-model="newName"
+                        id="new-car-name"
+                        placeholder="Car Name"
+                >
+                    <label for="new-car-style"></label><input
+                        v-model="newStyle"
+                        id="new-car-style"
+                        placeholder="Car Style"
+                >
+                    <label for="new-car-price"></label><input
+                        v-model="newPrice"
+                        id="new-car-price"
+                        placeholder="Price"
+                >
+                    <button>Add</button>
+                </fieldset>
+            </form>
+            <img v-bind:src="image" alt="" class="start_img">
+            <ul>
+                <li
+                        is="premium-car"
+                        v-for="(car, index) in cars"
+                        v-bind:key="car.id"
+                        v-bind:cars="car.brand + ' ' + car.name + ',  ' + car.style + ', ' + car.price + ' kr'"
+                        v-bind:img="car.img"
+                        v-on:remove="cars.splice(index, 1)"
+                        v-on:changeimage="image = car.img"
+                ></li>
+            </ul>
+        </div>
 
-<script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
-<script>
-    Vue.component('premium-car', {
-        template: `
+        <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+        <script>
+            Vue.component('premium-car',{
+                data: function (){
+                    return{
+                        count: 0
+                    }
+                },
+                template: `
           <fieldset>
     <li>
+      <img v-bind:src="img" alt="" v-on:mouseover="$emit('changeimage')" style="width: 200px; height: 100px;">
+    </li>
+    <li>
       {{ cars }}
+    </li>
+    <li>
+      <button v-on:click="count++">Interest {{ count }}</button>
       <button v-on:click="$emit('remove')">Delete</button>
     </li>
           </fieldset>
-  `,
-        props: ['cars']
-    })
-    new Vue({
-        el: '#premium-car-list',
-        data: {
-            newBrand: '',
-            newName: '',
-            newStyle: '',
-            newPrice: '',
-            cars: [
-                {
-                    id: 1,
-                    brand: 'Bugatti',
-                    name: 'Chiron Sport',
-                    style: '2-door Coupe',
-                    price: 42000000,
-                },
-                {
-                    id: 2,
-                    brand: 'Aston Martin',
-                    name: 'DBX 1913',
-                    style: '5-door SUV',
-                    price: 2249000
-                },
-                {
-                    id: 3,
-                    brand: 'Bentley',
-                    name: 'Flying Spur',
-                    style: '4-door Saloon',
-                    price: 3050000
-                }
-            ],
-            nextCarId: 4
-        },
-        methods: {
-            addNewCar: function (){
-                this.cars.push({
-                    id: this.nextCarId++,
-                    brand: this.newBrand,
-                    name: this.newName,
-                    style: this.newStyle,
-                    price: this.newPrice
-                })
-                this.newBrand = ''
-                this.newName = ''
-                this.newStyle = ''
-                this.newPrice = ''
-            }
-        }
-    })
-</script>
-    <footer>
+  `, props: ['cars', 'img']})
 
+            new Vue({
+                el: '#premium-car-list',
+                data: {
+                    newBrand: '',
+                    newName: '',
+                    newStyle: '',
+                    newPrice: '',
+                    image: 'img/a63ed828-a33b-4d1d-9f54-95d0e22c746f.jpg',
+                    cars: [
+                        {
+                            id: 1,
+                            brand: 'Bugatti',
+                            name: 'Chiron Sport',
+                            style: '2-door Coupe',
+                            price: 42000000,
+                            img: 'img/a63ed828-a33b-4d1d-9f54-95d0e22c746f.jpg'
+
+                        },
+                        {
+                            id: 2,
+                            brand: 'Aston Martin',
+                            name: 'DBX 1913',
+                            style: '5-door SUV',
+                            price: 2249000,
+                            img: 'img/maxresdefault.jpg'
+                        },
+                        {
+                            id: 3,
+                            brand: 'Bentley',
+                            name: 'Flying Spur',
+                            style: '4-door Saloon',
+                            price: 3050000,
+                            img: 'img/Bentley_Flying_Spur_(2019)_IMG_2635.jpg'
+                        },
+                        {
+                            id: 4,
+                            brand: 'Ferrari',
+                            name: 'Roma',
+                            style: '2-door Coupe',
+                            price: 2895000,
+                            img: 'img/2020-ferrari-roma-04-tapet-56582_L.jpg'
+                        },
+                        {
+                            id: 5,
+                            brand: 'Koenigsegg',
+                            name: 'Gemera',
+                            style: '2-door Coupe',
+                            price: 'TBA',
+                            img: 'img/5e5fb5f0fee23d0db301d3c2.webp'
+                        }
+                    ],
+                    nextCarId:6
+                },
+                methods: {
+                    addNewCar: function (){
+                        this.cars.push({
+                            id: this.nextCarId++,
+                            brand: this.newBrand,
+                            name: this.newName,
+                            style: this.newStyle,
+                            price: this.newPrice,
+                            img: 'img/6028_p2_l.jpg'
+                        })
+                        this.newBrand = ''
+                        this.newName = ''
+                        this.newStyle = ''
+                        this.newPrice = ''
+                    }
+                }
+            })
+        </script>
+    <footer>
+        &copy; Philip Mattsson 2021
     </footer>
 </section>
 </body>
