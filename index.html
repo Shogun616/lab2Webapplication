@@ -43,21 +43,26 @@
                 <li
                         is="premium-car"
                         v-for="(car, index) in cars"
+                        v-if="car.interested= 1" v-bind:style="{color: car.Color}"
                         v-bind:key="car.id"
                         v-bind:cars="car.brand + ' ' + car.name + ',  ' + car.style + ', ' + car.price + ' kr'"
                         v-bind:img="car.img"
+                        v-bind:interested="car.interested"
+                        v-bind:uninterested="car.uninterested"
                         v-on:remove="cars.splice(index, 1)"
                         v-on:changeimage="image = car.img"
+                        v-on:interested="car.interested = 1; car.Color = 'red'"
+                        v-on:uninterested="car.uninterested = 0; car.Color = 'black'"
                 ></li>
             </ul>
         </div>
-
         <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
         <script>
-            Vue.component('premium-car',{
+            Vue.component('premium-car', {
                 data: function (){
                     return{
-                        count: 0
+                        recommend: null,
+                        errors: []
                     }
                 },
                 template: `
@@ -67,21 +72,39 @@
     </li>
     <li>
       {{ cars }}
+      {{ interested }}
+      {{ uninterested }}
     </li>
     <li>
-      <button v-on:click="count++">Interest {{ count }}</button>
+      <button v-on:click="$emit('interested')">Interested</button>
+      <button v-on:click="$emit('uninterested')">Uninterested</button>
       <button v-on:click="$emit('remove')">Delete</button>
+<div id="premium-car-list">
+  <form v-on:submit.prevent="onSubmit">
+    <p>Would you recommend this product?</p>
+  </form>
+  <label>
+    Yes
+    <input type="radio" value="Yes" v-model="recommend"/>
+  </label>
+  <label>
+    No
+    <input type="radio" value="No" v-model="recommend"/>
+  </label>
+  <p>
+    <button>Submit</button>
+  </p>
+</div>
     </li>
           </fieldset>
-  `, props: ['cars', 'img']})
-
+  `, props: ['cars', 'img', 'interested', 'uninterested']})
             new Vue({
                 el: '#premium-car-list',
                 data: {
-                    newBrand: '',
-                    newName: '',
-                    newStyle: '',
-                    newPrice: '',
+                    newBrand: null,
+                    newName: null,
+                    newStyle: null,
+                    newPrice: null,
                     image: 'img/a63ed828-a33b-4d1d-9f54-95d0e22c746f.jpg',
                     cars: [
                         {
@@ -90,7 +113,10 @@
                             name: 'Chiron Sport',
                             style: '2-door Coupe',
                             price: 42000000,
-                            img: 'img/a63ed828-a33b-4d1d-9f54-95d0e22c746f.jpg'
+                            img: 'img/a63ed828-a33b-4d1d-9f54-95d0e22c746f.jpg',
+                            interested: 0,
+                            uninterested: 1,
+                            Color: 'black'
 
                         },
                         {
@@ -99,7 +125,10 @@
                             name: 'DBX 1913',
                             style: '5-door SUV',
                             price: 2249000,
-                            img: 'img/maxresdefault.jpg'
+                            img: 'img/maxresdefault.jpg',
+                            interested: 0,
+                            uninterested: 1,
+                            Color: 'black'
                         },
                         {
                             id: 3,
@@ -107,7 +136,10 @@
                             name: 'Flying Spur',
                             style: '4-door Saloon',
                             price: 3050000,
-                            img: 'img/Bentley_Flying_Spur_(2019)_IMG_2635.jpg'
+                            img: 'img/Bentley_Flying_Spur_(2019)_IMG_2635.jpg',
+                            interested: 0,
+                            uninterested: 1,
+                            Color: 'black'
                         },
                         {
                             id: 4,
@@ -115,7 +147,10 @@
                             name: 'Roma',
                             style: '2-door Coupe',
                             price: 2895000,
-                            img: 'img/2020-ferrari-roma-04-tapet-56582_L.jpg'
+                            img: 'img/2020-ferrari-roma-04-tapet-56582_L.jpg',
+                            interested: 0,
+                            uninterested: 1,
+                            Color: 'black'
                         },
                         {
                             id: 5,
@@ -123,10 +158,13 @@
                             name: 'Gemera',
                             style: '2-door Coupe',
                             price: 'TBA',
-                            img: 'img/5e5fb5f0fee23d0db301d3c2.webp'
+                            img: 'img/5e5fb5f0fee23d0db301d3c2.webp',
+                            interested: 0,
+                            uninterested: 1,
+                            Color: 'black'
                         }
                     ],
-                    nextCarId:6
+                    nextCarId:6,
                 },
                 methods: {
                     addNewCar: function (){
@@ -136,13 +174,22 @@
                             name: this.newName,
                             style: this.newStyle,
                             price: this.newPrice,
-                            img: 'img/6028_p2_l.jpg'
+                            img: 'img/6028_p2_l.jpg',
+                            interested: 0,
+                            uninterested: 1
                         })
-                        this.newBrand = ''
-                        this.newName = ''
-                        this.newStyle = ''
-                        this.newPrice = ''
+                        this.newBrand = null
+                        this.newName = null
+                        this.newStyle = null
+                        this.newPrice = null
                     }
+                },
+                    onSubmit(){
+                    let carReview = {
+                        recommend: this.recommend
+                    }
+                    this.$emit('review-submitted', carReview)
+                        this.recommend = null
                 }
             })
         </script>
