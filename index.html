@@ -12,9 +12,17 @@
     <h1>Premium Car</h1>
 </header>
         <div id="premium-car-list">
+            <fieldset>
+            <p>{{ message }}</p>
+            <label>Enter your name</label>
+                <label>
+                    <input v-model="yourName">
+                </label>
+                <button v-on:click="showMessage">Submit</button>
+            </fieldset>
+            <fieldset>
             <form v-on:submit.prevent="addNewCar">
                 <label for="new-car">Add a premium car</label>
-                <fieldset>
                     <input
                             v-model="newBrand"
                             id="new-car"
@@ -36,8 +44,8 @@
                         placeholder="Price"
                 >
                     <button>Add</button>
-                </fieldset>
             </form>
+            </fieldset>
             <img v-bind:src="image" alt="" class="start_img">
             <ul>
                 <li
@@ -47,60 +55,45 @@
                         v-bind:key="car.id"
                         v-bind:cars="car.brand + ' ' + car.name + ',  ' + car.style + ', ' + car.price + ' kr'"
                         v-bind:img="car.img"
+                        v-bind:img2="car.img2"
+                        v-bind:img3="car.img3"
                         v-bind:interested="car.interested"
                         v-bind:uninterested="car.uninterested"
                         v-on:remove="cars.splice(index, 1)"
                         v-on:changeimage="image = car.img"
-                        v-on:interested="car.interested = 1; car.Color = 'red'"
-                        v-on:uninterested="car.uninterested = 0; car.Color = 'black'"
+                        v-on:changeimage2="image = car.img2"
+                        v-on:changeimage3="image = car.img3"
+                        v-on:submitint="car.interested = 1; car.Color = 'red'"
+                        v-on:submituint="car.uninterested = 0; car.Color = 'black'"
                 ></li>
             </ul>
         </div>
         <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
         <script>
             Vue.component('premium-car', {
-                data: function (){
-                    return{
-                        recommend: null,
-                        errors: []
-                    }
-                },
                 template: `
           <fieldset>
     <li>
       <img v-bind:src="img" alt="" v-on:mouseover="$emit('changeimage')" style="width: 200px; height: 100px;">
+      <img v-bind:src="img2" alt="" v-on:mouseover="$emit('changeimage2')" style="width: 200px; height: 100px;">
+      <img v-bind:src="img3" alt="" v-on:mouseover="$emit('changeimage3')" style="width: 200px; height: 100px;">
     </li>
     <li>
       {{ cars }}
-      {{ interested }}
-      {{ uninterested }}
     </li>
     <li>
-      <button v-on:click="$emit('interested')">Interested</button>
-      <button v-on:click="$emit('uninterested')">Uninterested</button>
+      <button v-on:click="$emit('submitint')">Interested</button>
+      <button v-on:click="$emit('submituint')">Uninterested</button>
       <button v-on:click="$emit('remove')">Delete</button>
-<div id="premium-car-list">
-  <form v-on:submit.prevent="onSubmit">
-    <p>Would you recommend this product?</p>
-  </form>
-  <label>
-    Yes
-    <input type="radio" value="Yes" v-model="recommend"/>
-  </label>
-  <label>
-    No
-    <input type="radio" value="No" v-model="recommend"/>
-  </label>
-  <p>
-    <button>Submit</button>
-  </p>
-</div>
     </li>
           </fieldset>
-  `, props: ['cars', 'img', 'interested', 'uninterested']})
+  `, props: ['cars', 'img','img2','img3', 'interested', 'uninterested']})
+
             new Vue({
                 el: '#premium-car-list',
                 data: {
+                    message: 'Welcome to Premium Car!',
+                    yourName: '',
                     newBrand: null,
                     newName: null,
                     newStyle: null,
@@ -114,6 +107,8 @@
                             style: '2-door Coupe',
                             price: 42000000,
                             img: 'img/a63ed828-a33b-4d1d-9f54-95d0e22c746f.jpg',
+                            img2: 'img/20aea4c3-2536-4cf4-820d-e36164f2c54e.jpg',
+                            img3: 'img/skarmavbild_2020-08-12_kl._13.50.46.png',
                             interested: 0,
                             uninterested: 1,
                             Color: 'black'
@@ -125,7 +120,9 @@
                             name: 'DBX 1913',
                             style: '5-door SUV',
                             price: 2249000,
-                            img: 'img/maxresdefault.jpg',
+                            img: 'img/IMG_54640-large.jpg',
+                            img2: 'img/IMG_54618-large.jpg',
+                            img3: 'img/IMG_54629-large.jpg',
                             interested: 0,
                             uninterested: 1,
                             Color: 'black'
@@ -136,7 +133,9 @@
                             name: 'Flying Spur',
                             style: '4-door Saloon',
                             price: 3050000,
-                            img: 'img/Bentley_Flying_Spur_(2019)_IMG_2635.jpg',
+                            img: 'img/01-bentley-new-flying-spur-profile-with-meteor-paint-static-through-window-1400x700.jpg',
+                            img2: 'img/02-bentley-new-flying-spur-front-interior-3d-diamond-quilted-doors-and-dual-veneer-1400x700.jpg',
+                            img3: 'img/04-bentley-new-flying-spur-interior-interior-panoramic-sun-roof-1400x700.jpg',
                             interested: 0,
                             uninterested: 1,
                             Color: 'black'
@@ -147,7 +146,9 @@
                             name: 'Roma',
                             style: '2-door Coupe',
                             price: 2895000,
-                            img: 'img/2020-ferrari-roma-04-tapet-56582_L.jpg',
+                            img: 'img/12bce541-9990-42a6-93d6-d15d61af0cbf.jpg',
+                            img2: 'img/9a2cc9c6-ffcc-4bac-87d3-1bb9d68cdb0d.jpg',
+                            img3: 'img/d0db05c8-97dc-4a8f-b79d-59c89809512d.jpg',
                             interested: 0,
                             uninterested: 1,
                             Color: 'black'
@@ -158,7 +159,9 @@
                             name: 'Gemera',
                             style: '2-door Coupe',
                             price: 'TBA',
-                            img: 'img/5e5fb5f0fee23d0db301d3c2.webp',
+                            img: 'img/Gemera_front_high.jpg',
+                            img2: 'img/Gemera_interior_3_high.jpg',
+                            img3: 'img/Gemera_rear_high.jpg',
                             interested: 0,
                             uninterested: 1,
                             Color: 'black'
@@ -175,21 +178,20 @@
                             style: this.newStyle,
                             price: this.newPrice,
                             img: 'img/6028_p2_l.jpg',
+                            img2: 'img/6028_p14_l.jpg',
+                            img3: 'img/6028_p5_l.jpg',
                             interested: 0,
-                            uninterested: 1
+                            uninterested: 1,
+                            Color: 'black'
                         })
                         this.newBrand = null
                         this.newName = null
                         this.newStyle = null
                         this.newPrice = null
+                    },
+                    showMessage: function () {
+                        this.message = 'Hello ' + this.yourName + '!'
                     }
-                },
-                    onSubmit(){
-                    let carReview = {
-                        recommend: this.recommend
-                    }
-                    this.$emit('review-submitted', carReview)
-                        this.recommend = null
                 }
             })
         </script>
